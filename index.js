@@ -1,11 +1,11 @@
 const express = require( "express" );
-const dotenv = require( "dotenv" );
 const cors = require( "cors" );
-const PORT = +process.env.PORT || 3000;
+require( 'dotenv' ).config();
+const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || "127.0.0.1";
 
 const app = express();
-dotenv.config();
+
 
 const corsOptions = {
   origin: "*", // to be changed to the port num or specific domain for security

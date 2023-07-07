@@ -4,8 +4,11 @@
   "description": "bookstore chain book inventory management system",
   "main": "index.js",
   "scripts": {
+    "migrate": "knex migrate:latest --knexfile src/db/knexfile.js",
+    "rollback": "knex migrate:rollback --knexfile src/db/knexfile.js",
+    "seed": "knex seed:run --knexfile src/db/knexfile.js",
     "dev": "nodemon",
-    "start": "node",
+    "start": "node index.js",
     "test": "jest"
   },
   "author": "Lara Mauricio",
