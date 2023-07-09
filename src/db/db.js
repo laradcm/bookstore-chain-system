@@ -1,10 +1,10 @@
-const knex = require( 'knex' );
+
+const knex = require( 'knex' ).default;
 const knexFile = require( './knexfile' );
-require('dotenv').config({ path: '../../.env' });//brings in environment variables
+// require( 'dotenv' ).config( { path: '../../.env' } );//brings in environment variables
 
-const db = knex( knexFile[ process.env.DB_MODE ] );//loads db configuration
-module.exports = db;
+const env = process.env.NODE_ENV || 'development';
+const configOptions = knexFile[ env ];
 
-
-
+module.exports = knex( configOptions );//loads db configuration;
 

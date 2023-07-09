@@ -11,7 +11,7 @@ exports.seed = async function ( knex )
   await knex( 'books' ).del();
   await knex( 'books' ).insert( [
 
-    createBook( 1,
+    createBook(
       'Le Petit Prince',
 
       'Antoine de Saint-Exupéry',
@@ -19,7 +19,7 @@ exports.seed = async function ( knex )
       'The story follows a young prince who visits various planets, including Earth, and addresses themes of loneliness, friendship, love, and loss.'
     ),
 
-    createBook( 2,
+    createBook(
       'Dune',
 
       'Frank Herbert',
@@ -27,7 +27,7 @@ exports.seed = async function ( knex )
       'Dune is set in the distant future amidst a feudal interstellar society in which various noble houses control planetary fiefs. It tells the story of young Paul Atreides, whose family accepts the stewardship of the planet Arrakis'
     ),
 
-    createBook( 3,
+    createBook(
       'Pride and Prejudice',
 
       'Jane Austen',
@@ -35,5 +35,13 @@ exports.seed = async function ( knex )
       'The novel follows the character development of Elizabeth Bennet, the protagonist of the book, who learns about the repercussions of hasty judgments and comes to appreciate the difference between superficial goodness and actual goodness.'
     )
 
+
   ] );
 };
+
+
+// {
+//   title: "Harry Potter and the Order of the Phoenix",
+//   author: "JK Rowling",
+//   desc: "It follows Harry Potter's struggles through his fifth year at Hogwarts School of Witchcraft and Wizardry"
+// },

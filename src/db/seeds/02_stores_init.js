@@ -10,15 +10,15 @@ exports.seed = async function ( knex )
   await knex( 'stores' ).del();
   await knex( 'stores' ).insert( [
 
-    createStore( 1,
+    createStore(
       'That one',
       'Hochelaga'
     ),
-    createStore( 2,
+    createStore(
       'The other one',
       'Downtown'
     ),
-    createStore( 3,
+    createStore(
       'My favorite one',
       'St.Henri'
     ),

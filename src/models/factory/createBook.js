@@ -1,9 +1,8 @@
 //book object structure
-const createBook = ( id, title, author, desc ) =>
+const createBook = ( title, author, desc ) =>
 {
 
     const book = {};
-    book.id = id;
     book.title = title;
     book.author = author;
     book.desc = desc;

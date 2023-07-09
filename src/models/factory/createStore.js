@@ -1,8 +1,7 @@
 //store object structure
-const createStore = ( id, name, location ) =>
+const createStore = (name, location ) =>
 {
     const store = {};
-    store.id = id;
     store.name = name;
     store.location = location;
 
