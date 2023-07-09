@@ -4,3 +4,7 @@ require('dotenv').config({ path: '../../.env' });//brings in environment variabl
 
 const db = knex( knexFile[ process.env.DB_MODE ] );//loads db configuration
 module.exports = db;
+
+
+
+

@@ -3,7 +3,7 @@
  * @returns { Promise<void> } 
  */
 
-const book = require( '../../types/book' );
+const createBook  = require( '../../models/factory/createBook' );
 
 exports.seed = async function ( knex )
 {
@@ -11,7 +11,7 @@ exports.seed = async function ( knex )
   await knex( 'books' ).del();
   await knex( 'books' ).insert( [
 
-    book( 1,
+    createBook( 1,
       'Le Petit Prince',
 
       'Antoine de Saint-Exupéry',
@@ -19,7 +19,7 @@ exports.seed = async function ( knex )
       'The story follows a young prince who visits various planets, including Earth, and addresses themes of loneliness, friendship, love, and loss.'
     ),
 
-    book( 2,
+    createBook( 2,
       'Dune',
 
       'Frank Herbert',
@@ -27,7 +27,7 @@ exports.seed = async function ( knex )
       'Dune is set in the distant future amidst a feudal interstellar society in which various noble houses control planetary fiefs. It tells the story of young Paul Atreides, whose family accepts the stewardship of the planet Arrakis'
     ),
 
-    book( 3,
+    createBook( 3,
       'Pride and Prejudice',
 
       'Jane Austen',
