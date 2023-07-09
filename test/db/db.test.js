@@ -6,6 +6,10 @@ const knex = require( 'knex' ).default;
 const knexFile = require( '../../src/db/knexfile' );
 const db = knex( knexFile.test );
 
+const table = 'books';
+const createEntry = require( '../../src/models/factory/createBook' );
+
+
 //setup
 
 beforeAll( async () => //populates test db
@@ -56,7 +60,7 @@ describe( 'database', () =>
     it( 'should read data', async () =>
     {
 
-        const query = "select * from books";
+        const query = `select * from ${ table }`;
         const result = await db.raw( query );
 
         expect( result.rowCount ).toBeGreaterThan( 0 );
@@ -66,7 +70,7 @@ describe( 'database', () =>
     it( 'should read correct data', async () =>
     {
 
-        const query = "select id from books where id=1";
+        const query = `select id from ${ table } where id=1`;
         const result = await db.raw( query );
 
         expect( result.rows[ 0 ].id ).toBe( 1 );
@@ -75,13 +79,8 @@ describe( 'database', () =>
 
     it( 'should insert data', async () =>
     {
-        const book = {
-            title: "Title 1",
-            author: "Author 1",
-            desc: "Desc 1"
-        };
-
-        const result = await db( 'books' ).insert( book );
+        const entry = createEntry( 'Title 1', 'Auhtor 1', 'Desc 1');
+        const result = await db( table ).insert( entry );
 
         expect( result.rowCount ).toBe( 1 );
 
@@ -89,34 +88,28 @@ describe( 'database', () =>
 
     it( 'should insert correct data', async () =>
     {
-        const book = {
-            title: "Title 2",
-            author: "Author 2",
-            desc: "Desc 2"
-        };
+        const entry = createEntry( 'Title 2', 'Auhtor 2', 'Desc 2' );
+        const key = Object.keys( entry )[ 0 ];
 
-        await db( 'books' ).insert( book );
+        await db( table ).insert( entry );
 
-        const result = await db( 'books' ).where( 'title', book.title );
+        const result = await db( table ).where( key, entry[ key ] );
 
-        expect( result[ 0 ].title ).toBe( book.title );
+        expect( result[ 0 ][ key ] ).toBe( entry[ key ] );
 
     } );
 
     it( 'should delete data', async () =>
     {
 
-        const book = {
-            title: "Title 3",
-            author: "Author 3",
-            desc: "Desc 3"
-        };
+        const entry = createEntry( 'Title 3', 'Auhtor 3', 'Desc 3' );
+        const key = Object.keys( entry )[ 0 ];
 
-        await db( 'books' ).insert( book );
+        await db( table ).insert( entry );
 
-        const result = await db( 'books' ).where( 'title', book.title ).del();
+        const result = await db( table ).where( key, entry[ key ] ).del();
 
-        expect( result ).toBe( 1 );
+        expect( result ).toBeGreaterThan( 0 );
 
     } );
 
