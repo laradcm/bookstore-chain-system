@@ -1,6 +1,9 @@
 require( 'dotenv' ).config();
 const express = require( "express" );
 const cors = require( "cors" );
+const reqTracking = require( './src/middlewares/reqTracking' );
+const errorHandler = require( './src/middlewares/errorHandler' );
+const router = require( './src/routers' )[ 'default' ];
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || "127.0.0.1";
 
@@ -14,10 +17,13 @@ const corsOptions = {
 //middlewares
 app.use( cors( corsOptions ) );
 app.use( express.json() );
+app.use( reqTracking );
 
 
 //routing
+app.use( '/', router() );
 
+app.use(errorHandler);
 
 //serve static landing page
 app.use( express.static( "public" ) );
