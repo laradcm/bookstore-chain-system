@@ -1,20 +1,18 @@
 //book validation schema
 const Joi = require( 'joi' );
 
-const bookSchema = Joi.object( {
+const createStoreSchema = Joi.object( {
 
-    id:
-        [
-            Joi.string().pattern( /^[1-9][0-9]*$/, 'numbers min 1' ).required()
-            , Joi.number().min( 1 ).required()
-        ],
+    name: Joi.string().max( 255 ).required(),
 
-    title: Joi.string().max( 255 ).required(),
-
-    author: Joi.string().max( 255 ).required(),
-
-    desc: Joi.string().max( 255 ).required()
+    location: Joi.string().max( 255 ).required(),
 
 } );
 
-module.exports = bookSchema;
+const storeKeys = Object.keys( createStoreSchema.describe().keys );
+const updateStoreSchema = createStoreSchema.fork( storeKeys, schema => schema.optional() );
+
+module.exports = {
+    create: createStoreSchema,
+    update: updateStoreSchema,
+};

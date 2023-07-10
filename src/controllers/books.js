@@ -1,28 +1,11 @@
+const valModel = require( '../models/validation' );
 const dao = require( '../models/dao/books' );
+const Controller = require( './template/controller' );
 
 
-const getBooks = async ( req, res, next ) =>
-{
-    try {
-        res.json( await dao.getBooks() );
-    } catch ( err ) {
-        err.message = `Error while getting books: ` + err.message;
-        next( err );
-    }
-};
+const booksController = Controller('books', dao, valModel.bookSchema);
 
-const getBookById = async ( req, res, next ) =>
-{
-    try {
-        res.json( await dao.getBookById(req.params.id) );
-    } catch ( err ) {
-        err.message = `Error while getting books: ` + err.message;
-        next( err );
-    }
-};
+//put your custom controller functions here:
+//ex booksController.myCustomGet =  async (req, res, next) => {...}
 
-
-module.exports = {
-    getBooks,
-    getBookById,
-}
+module.exports = booksController;

@@ -1,27 +1,58 @@
-
-/**
- * @type { Knex }
- */
-const { Knex } = require( 'knex' );
+const knex = require( 'knex' );
 const db = require( '../../db/db' );
 const table = 'books';
 
-
-const getBooks = async () =>
+const getAll = async () =>
 {
-    const result = await db( table ).select( '*' );
+    return await db( table ).select( '*' );
+};
+
+const getUnique = async ( id ) =>
+{
+    return await db( table ).where( 'id', id );
+};
+
+const create = async ( body ) =>
+{
+    try {
+        return await db.transaction( async trx =>
+        {
+            const result = await trx( table ) //create books
+                .insert( body );
+
+            // const updateInventory = await trx( table ) //write update inventory here
+            //     .insert( body );//TODO
+
+            if ( trx.isCompleted ) {
+                return result;
+            }
+
+        } );
+
+    } catch ( error ) {
+        console.error( error );
+    }
+};
+
+const updateUnique = async ( id, body ) =>
+{
+    const result = await db( table )
+        .where( 'id', id )
+        .update( body );
+
     return result;
 };
 
-const getBookById = async ( id ) =>
+const deleteUnique = async ( id ) =>
 {
-    const result = await db( table ).where( 'id', id );
-    return result;
+    return await db( table ).where( 'id', id ).del();
 };
-
 
 module.exports = {
-    getBooks,
-    getBookById,
+    getAll,
+    getUnique,
+    create,
+    updateUnique,
+    deleteUnique
 };
 

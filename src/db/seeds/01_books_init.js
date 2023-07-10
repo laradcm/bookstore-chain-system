@@ -40,8 +40,3 @@ exports.seed = async function ( knex )
 };
 
 
-// {
-//   title: "Harry Potter and the Order of the Phoenix",
-//   author: "JK Rowling",
-//   desc: "It follows Harry Potter's struggles through his fifth year at Hogwarts School of Witchcraft and Wizardry"
-// },
