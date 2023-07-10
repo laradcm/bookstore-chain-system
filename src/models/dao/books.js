@@ -1,18 +1,11 @@
-const knex = require( 'knex' );
+const Dao = require( './dao' );
 const db = require( '../../db/db' );
 const table = 'books';
 
-const getAll = async () =>
-{
-    return await db( table ).select( '*' );
-};
+const booksDao = Dao( table, db );
 
-const getUnique = async ( id ) =>
-{
-    return await db( table ).where( 'id', id );
-};
-
-const create = async ( body ) =>
+//extended booksDao for future custom mod TODO
+booksDao.create = async ( body ) =>
 {
     try {
         return await db.transaction( async trx =>
@@ -34,25 +27,5 @@ const create = async ( body ) =>
     }
 };
 
-const updateUnique = async ( id, body ) =>
-{
-    const result = await db( table )
-        .where( 'id', id )
-        .update( body );
-
-    return result;
-};
-
-const deleteUnique = async ( id ) =>
-{
-    return await db( table ).where( 'id', id ).del();
-};
-
-module.exports = {
-    getAll,
-    getUnique,
-    create,
-    updateUnique,
-    deleteUnique
-};
+module.exports = booksDao;
 
