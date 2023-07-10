@@ -9,7 +9,7 @@ const get = ( table, dao, valModel ) =>
             res.json( await dao.getAll() );
 
         } catch ( err ) {
-            err.message = `Error while getting ${table}: ` + err.message;
+            err.message = `Error while getting ${ table }: ` + err.message;
             next( err );
         }
     };
@@ -20,7 +20,7 @@ const get = ( table, dao, valModel ) =>
             let message = '';
             let status = 200;
 
-            const { error } = valModel.id.validate( { id: req.params.id });
+            const { error } = valModel.id.validate( { id: req.params.id } );
 
             if ( error ) {
                 message = `Bad input: ${ error.message }`;
@@ -28,13 +28,20 @@ const get = ( table, dao, valModel ) =>
 
             } else {
                 const result = await dao.getUnique( req.params.id );
-                message = result;
+                if ( result === [] ) {
+                    message = `${ table } not found`;
+                    status = 404;
+
+                } else {
+                    message = result;
+                }
+
             }
 
             res.status( status ).json( message );
 
         } catch ( err ) {
-            err.message = `Error while getting ${table} by id: ` + err.message;
+            err.message = `Error while getting ${ table } by id: ` + err.message;
             next( err );
         }
     };

@@ -17,9 +17,13 @@ const deletes = ( table, dao, valModel ) =>
 
             } else {
                 const result = await dao.deleteUnique( req.params.id );
-                message = result > 0 ?
-                    `${ result } ${ table } deletion succesful!` :
-                    `${ table } not found, no deletions occured`;
+                if ( result === 0 ) {
+                    message = `${ table } not found, no deletions occured`;
+                    status = 404;
+
+                } else {
+                    message = `${ result } ${ table } deletion succesful!`;
+                }
             }
 
             res.status( status ).json( message );

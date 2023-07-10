@@ -22,9 +22,13 @@ const update = ( table, dao, valModel ) =>
 
             } else {
                 const result = await dao.updateUnique( req.params.id, req.body );
-                message = result > 0 ?
-                    `${ result } ${ table } update succesful!` :
-                    `${ table } not found, nothing to update`;
+                if ( result === 0 ) {
+                    message = `${ table } not found, no deletions occured`;
+                    status = 404;
+
+                } else {
+                    message = `${ result } ${ table } deletion succesful!`;
+                }
             }
 
             res.status( status ).json( message );
