@@ -7,6 +7,7 @@
     "migrate": "knex migrate:latest --knexfile src/db/knexfile.js",
     "rollback": "knex migrate:rollback --knexfile src/db/knexfile.js",
     "seed": "knex seed:run --knexfile src/db/knexfile.js",
+    "restartDB":  "npm run rollback && npm run migrate && npm run seed",
     "dev": "nodemon",
     "start": "node index.js",
     "test": "jest"
