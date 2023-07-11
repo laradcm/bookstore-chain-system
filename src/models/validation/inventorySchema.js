@@ -3,9 +3,9 @@ const Joi = require( 'joi' );
 
 const createInventorySchema = Joi.object( {
 
-    quantity: Joi.number().min( 1 ).required(),
+    quantity: Joi.number().required(),
 
-    status: Joi.string().max( 12 )
+    status: Joi.string().max( 12 ).forbidden()//user should not modify this
 
 } );
 
@@ -17,8 +17,8 @@ const idSchema = Joi.object( {
 
 } );
 
-//for update make keys optional
-const updateInventorySchema = createInventorySchema.fork( [ 'quantity' ], schema => schema.optional() ).min(1);//keys are optional, but input cannot be empty
+
+const updateInventorySchema = createInventorySchema;
 
 module.exports = {
     create: createInventorySchema,

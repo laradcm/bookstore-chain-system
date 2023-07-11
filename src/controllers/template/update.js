@@ -1,3 +1,4 @@
+const inventoryStatusCheck = require( '../../helpers/inventoryStatusCheck' );
 //agregation of update methods for the controller factory
 const update = ( table, dao, valModel ) =>
 {
@@ -9,7 +10,7 @@ const update = ( table, dao, valModel ) =>
             let message = '';
             let status = 200;
 
-            const errorId = valModel.id.validate( req.params  ).error;
+            const errorId = valModel.id.validate( req.params ).error;
             const errorBody = valModel.update.validate( req.body ).error;
 
             if ( errorId ) {
@@ -18,9 +19,10 @@ const update = ( table, dao, valModel ) =>
 
             } else if ( errorBody ) {
                 message = `Bad input: ${ errorBody.message }`;
-                status = 400;
+                status = errorBody.message.includes( 'not allowed' ) ? 403 : 400;
 
             } else {
+                req.body = inventoryStatusCheck( table, req.body );
                 const result = await dao.updateUnique( req.params, req.body );
                 if ( result === 0 ) {
                     message = `${ table } not found, no updates occured`;
