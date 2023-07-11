@@ -36,7 +36,7 @@ exports.up = function(knex)
 
             table.string( 'status', 12 )
                 .notNullable()
-                .defaultTo( 'out_of_stock' )
+                .defaultTo( 'in_stock' )//since we have the updateStock periodic task to check and set it to 'out_of_stock if needed'
                 .checkIn( [ 'out_of_stock', 'in_stock' ] );
 
             table.foreign( 'store_id' )

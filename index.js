@@ -4,6 +4,7 @@ const cors = require( "cors" );
 const reqTracking = require( './src/middlewares/reqTracking' );
 const errorHandler = require( './src/middlewares/errorHandler' );
 const router = require( './src/routers' );
+const updateStock = require('./src/helpers/updateStock')
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || "127.0.0.1";
 
@@ -35,3 +36,5 @@ app.listen( PORT, HOST, () =>
 } );
 
 
+//books stocks watch ----------
+setInterval(updateStock, 60000);
