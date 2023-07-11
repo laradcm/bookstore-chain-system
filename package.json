@@ -10,7 +10,7 @@
     "restartDB":  "npm run rollback && npm run migrate && npm run seed",
     "dev": "nodemon",
     "start": "node index.js",
-    "test": "jest"
+    "test": "jest "
   },
   "author": "Lara Mauricio",
   "license": "ISC",

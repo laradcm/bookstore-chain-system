@@ -1,3 +1,5 @@
+const path = require( 'path' );
+require( 'dotenv' ).config( { path: path.resolve( './.env' ) } );//brings in environment variables
 
 const knex = require( 'knex' ).default;
 const knexFile = require( './knexfile' );

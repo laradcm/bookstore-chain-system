@@ -1,7 +1,5 @@
 
-
-
-require( 'dotenv' ).config( { path: '../../.env' } );//brings in environment variables
+const path = require( 'path' );
 const knex = require( 'knex' ).default;
 const knexFile = require( '../../src/db/knexfile' );
 const db = knex( knexFile.test );
@@ -17,9 +15,9 @@ beforeAll( async () => //populates test db
     const dbSetup = knex( knexFile.test );
 
     try {
-        await dbSetup.migrate.rollback( { directory: '../../src/db/migrations' } );
-        await dbSetup.migrate.latest( { directory: '../../src/db/migrations' } );
-        await dbSetup.seed.run( { directory: '../../src/db/seeds' } );
+        await dbSetup.migrate.rollback( { directory: path.resolve( './src/db/migrations' ) } );
+        await dbSetup.migrate.latest( { directory: path.resolve( './src/db/migrations' ) } );
+        await dbSetup.seed.run( { directory: path.resolve( './src/db/seeds' ) } );
 
     } catch ( error ) {
         console.error( error.stack );
@@ -79,7 +77,7 @@ describe( 'database', () =>
 
     it( 'should insert data', async () =>
     {
-        const entry = createEntry( 'Title 1', 'Auhtor 1', 'Desc 1');
+        const entry = createEntry( 'Title 1', 'Auhtor 1', 'Desc 1' );
         const result = await db( table ).insert( entry );
 
         expect( result.rowCount ).toBe( 1 );
@@ -115,8 +113,9 @@ describe( 'database', () =>
 
 } );
 
-afterAll( () =>
+afterAll( async () =>
 {
+    // await db.migrate.rollback( { directory: '../../src/db/migrations' } );
     db.destroy();
 } )
 
