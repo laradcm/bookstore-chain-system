@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../../.env' });//brings in environment variables
+require('dotenv').config({ path: '../../.env' });//brings in environment variables for local node execution
 
 /**
  * @type { Object.<string, import("knex").Knex.Config> }

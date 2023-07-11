@@ -9,8 +9,9 @@ const createStoreSchema = Joi.object( {
 
 } );
 
+//for update make keys optional
 const storeKeys = Object.keys( createStoreSchema.describe().keys );
-const updateStoreSchema = createStoreSchema.fork( storeKeys, schema => schema.optional() );
+const updateStoreSchema = createStoreSchema.fork( storeKeys, schema => schema.optional() ).min(1);//keys are optional, but input cannot be empty
 
 module.exports = {
     create: createStoreSchema,

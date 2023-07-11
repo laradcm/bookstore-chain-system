@@ -11,9 +11,9 @@ const createBookSchema = Joi.object( {
 
 } );
 
-
+//for update make keys optional
 const bookKeys = Object.keys( createBookSchema.describe().keys );
-const updateBookSchema = createBookSchema.fork( bookKeys, schema => schema.optional() );
+const updateBookSchema = createBookSchema.fork( bookKeys, schema => schema.optional() ).min(1);//keys are optional, but input cannot be empty
 
 
 module.exports = {

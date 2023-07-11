@@ -1,4 +1,4 @@
-// works for any datatype, checks if variable is of the specified datatype: string
+// works for any datatype, checks if variable is of the specified datatype:string
 //ex.: isDatatype( [] , "Array" ) will return true
 
 const isDatatype = ( variable, datatype ) => 
