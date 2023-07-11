@@ -9,7 +9,6 @@ const createEntry = require( '../../src/models/factory/createBook' );
 
 
 //setup
-
 beforeAll( async () => //populates test db
 {
     const dbSetup = knex( knexFile.test );
@@ -20,10 +19,10 @@ beforeAll( async () => //populates test db
         await dbSetup.seed.run( { directory: path.resolve( './src/db/seeds' ) } );
 
     } catch ( error ) {
-        console.error( error.stack );
+        console.error( error );
 
     } finally {
-        dbSetup.destroy(); //knex does not hang after node operations, it needs to be done manually by destroying the connection
+        dbSetup.destroy(); //knex does not hang after cmd operations, it needs to be done manually by destroying the connection
     }
 
 } );
@@ -115,8 +114,15 @@ describe( 'database', () =>
 
 afterAll( async () =>
 {
-    // await db.migrate.rollback( { directory: '../../src/db/migrations' } );
-    db.destroy();
+    try {
+        await db.migrate.rollback( { directory: path.resolve( './src/db/migrations' ) } );
+
+    } catch ( error ) {
+        console.error( error );
+    } finally {
+        db.destroy();
+    }
+
 } )
 
 

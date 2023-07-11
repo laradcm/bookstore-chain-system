@@ -7,7 +7,7 @@ const db = knex( knexFile.test );
 const Dao = ( table, db ) =>
 {
     const dao = {};
-
+    dao.connection = db;
     //------------gets------------------------------------------
     dao.getAll = async () =>
     {
