@@ -2,7 +2,6 @@
 
 const random = ( lower = 100, upper ) =>
 {
-
     if ( !upper ) {
         upper = lower;
         lower = 0;

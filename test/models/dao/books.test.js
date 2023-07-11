@@ -1,27 +1,12 @@
-const path = require( 'path' );
-const knex = require( 'knex' ).default;
-const knexFile = require( '../../../src/db/knexfile' );
+const { dbInit, dbReset } = require( '../../dbSetup' );
 const dao = require( '../../../src/models/dao/books' );
 const createEntry = require( '../../../src/models/factory/createBook' );
-
 
 
 //setup
 beforeAll( async () => //populates test db
 {
-    const db = knex( knexFile.test );
-
-    try {
-        await db.migrate.rollback( { directory: path.resolve( './src/db/migrations' ) } );
-        await db.migrate.latest( { directory: path.resolve( './src/db/migrations' ) } );
-        await db.seed.run( { directory: path.resolve( './src/db/seeds' ) } );
-
-    } catch ( error ) {
-        console.error( error.stack );
-
-    } finally {
-        db.destroy(); //knex does not hang after node operations, it needs to be done manually by destroying the connection
-    }
+    await dbInit();
 
 } );
 
@@ -79,22 +64,14 @@ describe( 'books DAO', () =>
 
     } );
 
-
 } );
 
 
+//wrap
 afterAll( async () =>
 {
-    const db = knex( knexFile.test );
+    await dbReset();
 
-    try {
-        await db.migrate.rollback( { directory: path.resolve( './src/db/migrations' ) } );
-
-    } catch ( error ) {
-        console.error( error );
-    } finally {
-        db.destroy();
-        dao.connection.destroy();
-    }
+    dao.connection.destroy();
 
 } );

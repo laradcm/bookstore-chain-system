@@ -1,29 +1,17 @@
 
-const path = require( 'path' );
 const knex = require( 'knex' ).default;
 const knexFile = require( '../../src/db/knexfile' );
-const db = knex( knexFile.test );
+const { dbInit, dbReset } = require( '../dbSetup' );
 
-const table = 'books';
 const createEntry = require( '../../src/models/factory/createBook' );
+const db = knex( knexFile.test );
+const table = 'books';
 
 
 //setup
-beforeAll( async () => //populates test db
+beforeAll( async () => 
 {
-    const dbSetup = knex( knexFile.test );
-
-    try {
-        await dbSetup.migrate.rollback( { directory: path.resolve( './src/db/migrations' ) } );
-        await dbSetup.migrate.latest( { directory: path.resolve( './src/db/migrations' ) } );
-        await dbSetup.seed.run( { directory: path.resolve( './src/db/seeds' ) } );
-
-    } catch ( error ) {
-        console.error( error );
-
-    } finally {
-        dbSetup.destroy(); //knex does not hang after cmd operations, it needs to be done manually by destroying the connection
-    }
+    await dbInit();//populates test DB
 
 } );
 
@@ -112,16 +100,13 @@ describe( 'database', () =>
 
 } );
 
+
+//wrap
 afterAll( async () =>
 {
-    try {
-        await db.migrate.rollback( { directory: path.resolve( './src/db/migrations' ) } );
+    db.destroy();//destroys connection made for the tests
 
-    } catch ( error ) {
-        console.error( error );
-    } finally {
-        db.destroy();
-    }
+    await dbReset();//resets test DB
 
 } )
 
