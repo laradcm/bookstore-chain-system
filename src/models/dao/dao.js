@@ -14,9 +14,10 @@ const Dao = ( table, db ) =>
         return await db( table ).select( '*' );
     };
 
+
     dao.getUnique = async ( id ) =>
     {
-        return await db( table ).where( 'id', id );
+        return await db( table ).where( id );
     };
 
     // dao.checkIfUnique = async ( id ) => //TODO
@@ -53,7 +54,7 @@ const Dao = ( table, db ) =>
     dao.updateUnique = async ( id, body ) =>
     {
         const result = await db( table )
-            .where( 'id', id )
+            .where( id )
             .update( body );
 
         return result;
@@ -62,7 +63,7 @@ const Dao = ( table, db ) =>
     //--------------deletes-------------------------------------
     dao.deleteUnique = async ( id ) =>
     {
-        return await db( table ).where( 'id', id ).del();
+        return await db( table ).where( id ).del();
     };
 
     return dao;

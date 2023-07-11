@@ -10,13 +10,13 @@ const deletes = ( table, dao, valModel ) =>
             let message = '';
             let status = 200;
 
-            const { error } = valModel.id.validate( { id: req.params.id } );
+            const { error } = valModel.id.validate( req.params );
             if ( error ) {
                 message = `Bad input: ${ error.message }`;
                 status = 400;
 
             } else {
-                const result = await dao.deleteUnique( req.params.id );
+                const result = await dao.deleteUnique( req.params );
                 if ( result === 0 ) {
                     message = `${ table } not found, no deletions occured`;
                     status = 404;

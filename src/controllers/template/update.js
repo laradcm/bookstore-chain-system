@@ -9,7 +9,7 @@ const update = ( table, dao, valModel ) =>
             let message = '';
             let status = 200;
 
-            const errorId = valModel.id.validate( { id: req.params.id } ).error;
+            const errorId = valModel.id.validate( req.params  ).error;
             const errorBody = valModel.update.validate( req.body ).error;
 
             if ( errorId ) {
@@ -21,7 +21,7 @@ const update = ( table, dao, valModel ) =>
                 status = 400;
 
             } else {
-                const result = await dao.updateUnique( req.params.id, req.body );
+                const result = await dao.updateUnique( req.params, req.body );
                 if ( result === 0 ) {
                     message = `${ table } not found, no updates occured`;
                     status = 404;

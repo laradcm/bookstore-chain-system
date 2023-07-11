@@ -10,10 +10,9 @@ const idSchema = Joi.object( {
 
 } );
 
+//attach id validation to other schemas
 bookSchema.id = idSchema;
-inventorySchema.id = idSchema;
 storeSchema.id = idSchema;
-
 
 module.exports = {
     bookSchema,
