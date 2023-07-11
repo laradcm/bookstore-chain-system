@@ -3,7 +3,7 @@ const express = require( "express" );
 const cors = require( "cors" );
 const reqTracking = require( './src/middlewares/reqTracking' );
 const errorHandler = require( './src/middlewares/errorHandler' );
-const router = require( './src/routers' )[ 'default' ];
+const router = require( './src/routers' );
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || "127.0.0.1";
 

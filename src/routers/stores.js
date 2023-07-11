@@ -4,10 +4,10 @@ const {
     create,
     updateUnique,
     deleteUnique,
+    
+} = require( "../controllers/stores" );
 
-} = require( "../controllers/books" );
-
-const handle = 'books';
+const handle = 'stores';
 
 const routes = ( router ) =>
 {
@@ -19,7 +19,7 @@ const routes = ( router ) =>
 
     router.patch( `/${ handle }/:id`, updateUnique );
 
-    router.delete( `/${ handle }/:id`, deleteUnique );
+    router.delete( `/${ handle }/:id`, deleteUnique);
 };
 
 module.exports = routes;

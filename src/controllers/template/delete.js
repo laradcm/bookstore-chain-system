@@ -22,7 +22,7 @@ const deletes = ( table, dao, valModel ) =>
                     status = 404;
 
                 } else {
-                    message = `${ result } ${ table } deletion succesful!`;
+                    message = `${ result } ${ table } deletion successful!`;
                 }
             }
 

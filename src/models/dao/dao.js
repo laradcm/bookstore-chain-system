@@ -1,4 +1,9 @@
 
+const { Knex } = require( 'knex' );
+const knex = require( 'knex' );
+const knexFile = require( '../../db/knexfile' );
+const db = knex( knexFile.test );
+
 const Dao = ( table, db ) =>
 {
     const dao = {};
@@ -14,22 +19,33 @@ const Dao = ( table, db ) =>
         return await db( table ).where( 'id', id );
     };
 
+    // dao.checkIfUnique = async ( id ) => //TODO
+    // {
+    //     return await db( table ).where( 'id', id );
+    // };
+
     //---------------creates------------------------------------
     dao.create = async ( body ) =>
     {
         try {
-            return await db.transaction( async trx =>
+            const finalResult = await db.transaction( async trx =>
             {
-                const result = await trx( table ) //create books
+                const result = await trx( table ) //create stores
                     .insert( body );
+
+                // const updateInventory = await trx( table ) //write update inventory here
+                //     .insert( body );//TODO
 
                 if ( trx.isCompleted ) {
                     return result;
                 }
+
             } );
 
+            return finalResult.rowCount;
+
         } catch ( error ) {
-            console.error( error );
+            throw ( error );
         }
     };
 

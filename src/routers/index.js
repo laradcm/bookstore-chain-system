@@ -1,10 +1,14 @@
 const express = require( 'express' );
 const router = express.Router();
 
-const book = require( './books' )['default'];
+const books = require( './books' );
+const stores = require( './stores' );
 
-exports['default'] = ( ) =>
-{
-    book( router );
+const route = () => //builds router with other routes, see definitions for details
+{   
+    books( router );
+    stores( router );
     return router;
 };
+
+module.exports = route;
