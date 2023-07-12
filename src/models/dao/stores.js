@@ -5,6 +5,7 @@ const table = 'stores';
 
 const storesDao = Dao( table, db );
 
+//custom dao functions:
 
 storesDao.create = async ( body ) =>
 {
@@ -14,7 +15,7 @@ storesDao.create = async ( body ) =>
             const storesIds = await trx( table )
                 .insert( body, 'id' );
 
-            const booksIds = await trx( 'books' ).select( 'id' );
+            const booksIds = await trx( 'books' ).select( 'id' );//gets books
 
             const inventoryIds = await inventoryDao.create( trx, storesIds, booksIds );
 

@@ -15,7 +15,7 @@ exports.up = function(knex)
         .createTable( 'stores', function ( table )
         {
             table.increments( 'id' );
-            table.string( 'name', 255 ).notNullable().unique();
+            table.string( 'name', 255 ).notNullable();
             table.string( 'location', 255 ).notNullable();
         } )
         .createTable( 'inventory', function ( table )

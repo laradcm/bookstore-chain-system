@@ -1,4 +1,4 @@
-//inventory object structure
+//inventory factory for testing and seeds templates
 const createInventory = ( store_id, book_id, quantity, status ) =>
 {
     if ( !status ) {

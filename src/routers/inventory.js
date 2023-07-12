@@ -1,7 +1,7 @@
 const {
     getAll,
     getUnique,
-    updateUnique,
+    update,
 
 } = require( "../controllers/inventory" );
 
@@ -13,7 +13,9 @@ const routes = ( router ) =>
 
     router.get( `/${ handle }/:store_id/:book_id`, getUnique );
 
-    router.patch( `/${ handle }/:store_id/:book_id`, updateUnique );
+    router.patch( `/${ handle }`, update );//for batch or body only update
+
+    router.patch( `/${ handle }/:store_id/:book_id`, update );
 
 };
 

@@ -1,13 +1,16 @@
 
-const { Knex } = require( 'knex' );
+const { Knex } = require( 'knex' );//attempt to bring types in, I miss TypeScript
 const knex = require( 'knex' );
 const knexFile = require( '../../db/knexfile' );
 const db = knex( knexFile.test );
 
+//factory function to build CRUD of Data Access Operations
+
 const Dao = ( table, db ) =>
 {
     const dao = {};
-    dao.connection = db;
+    dao.connection = db;//so you can forcibly destroy it if needed
+
     //------------gets------------------------------------------
     dao.getAll = async () =>
     {
@@ -20,10 +23,6 @@ const Dao = ( table, db ) =>
         return await db( table ).where( id );
     };
 
-    // dao.checkIfUnique = async ( id ) => //TODO
-    // {
-    //     return await db( table ).where( 'id', id );
-    // };
 
     //---------------creates------------------------------------
     dao.create = async ( body ) =>
@@ -31,11 +30,8 @@ const Dao = ( table, db ) =>
         try {
             const finalResult = await db.transaction( async trx =>
             {
-                const result = await trx( table ) //create stores
+                const result = await trx( table ) 
                     .insert( body );
-
-                // const updateInventory = await trx( table ) //write update inventory here
-                //     .insert( body );//TODO
 
                 if ( trx.isCompleted ) {
                     return result;
@@ -51,13 +47,39 @@ const Dao = ( table, db ) =>
     };
 
     //---------------updates------------------------------------
-    dao.updateUnique = async ( id, body ) =>
+    dao.updateUnique = async ( id, body, trx = false ) =>
     {
-        const result = await db( table )
+        dbSelect = trx ? trx : db;
+        const result = await dbSelect( table )
             .where( id )
             .update( body );
 
         return result;
+    };
+
+    dao.updateMany = async ( id, body ) => //depends on updateUnique
+    {
+        try {
+            const finalResult = await db.transaction( async trx =>
+            {
+                const result = [];
+
+                for ( let i = 0; i < id.length; i++ ) {
+                    
+                    const res = await dao.updateUnique( id[ i ], body[ i ], trx ); //here
+                    result.push( res );
+                }
+
+                if ( trx.isCompleted ) {
+                    return result;
+                }
+            } );
+
+            return finalResult.length;
+
+        } catch ( error ) {
+            throw ( error );
+        }
     };
 
     //--------------deletes-------------------------------------

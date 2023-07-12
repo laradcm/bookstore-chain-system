@@ -5,12 +5,15 @@ const table = 'inventory';
 
 const inventoryDao = Dao( table, db );
 
+//custom dao functions:
 
-inventoryDao.updateUnique = async ( id, body ) =>
+inventoryDao.updateUnique = async ( id, body, trx = false ) =>
 {
-  body.status = body.quantity > 0 ? 'in_stock' : 'out_of_stock';//attach status to body
+  body.status = body.quantity > 0 ? 'in_stock' : 'out_of_stock';//attaches status to body
 
-  const result = await db( table )
+  const dbSelect = trx ? trx : db;
+
+  const result = await dbSelect( table )
     .where( id )
     .update( body );
 
@@ -28,7 +31,8 @@ inventoryDao.updateStock = async () =>//for periodic stock check task
 
 
 //Inventory is a child from stores and books and will be automatically created/deleted when its parents are modified
-inventoryDao.create = async ( trx, storesIds, booksIds ) =>
+
+inventoryDao.create = async ( trx, storesIds, booksIds ) =>//called internally from books and stores
 {
   const data = generateInventory( storesIds, booksIds );
   return await trx( table ).insert( data, [ 'store_id', 'book_id' ] );

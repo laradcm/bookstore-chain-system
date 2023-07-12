@@ -1,4 +1,4 @@
-//store object structure
+//store factory for testing and seeds templates
 const createStore = (name, location ) =>
 {
     const store = {};

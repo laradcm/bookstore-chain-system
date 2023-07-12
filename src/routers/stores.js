@@ -2,7 +2,7 @@ const {
     getAll,
     getUnique,
     create,
-    updateUnique,
+    update,
     deleteUnique,
     
 } = require( "../controllers/stores" );
@@ -17,7 +17,9 @@ const routes = ( router ) =>
 
     router.post( `/${ handle }`, create );
 
-    router.patch( `/${ handle }/:id`, updateUnique );
+    router.patch( `/${ handle }`, update );
+
+    router.patch( `/${ handle }/:id`, update );//for batch or body only update
 
     router.delete( `/${ handle }/:id`, deleteUnique);
 };

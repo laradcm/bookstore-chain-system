@@ -1,29 +1,17 @@
 //agregation of delete methods for the controller factory
-
-const deletes = ( table, dao, valModel ) =>
+const deletes = ( table, dao, valModel, validation ) =>
 {
     const controller = {};
 
     controller.deleteUnique = async ( req, res, next ) =>
     {
         try {
-            let message = '';
-            let status = 200;
+            const input = req.params ? req.params : req.body;
+            let { status, message, error } = validation.inputVal( input, valModel.id );
 
-            const { error } = valModel.id.validate( req.params );
-            if ( error ) {
-                message = `Bad input: ${ error.message }`;
-                status = 400;
-
-            } else {
+            if ( !error ) {
                 const result = await dao.deleteUnique( req.params );
-                if ( result === 0 ) {
-                    message = `${ table } not found, no deletions occured`;
-                    status = 404;
-
-                } else {
-                    message = `${ result } ${ table } deletion successful!`;
-                }
+                [ status, message ] = validation.resultCheck( table, result, 'deletions' );
             }
 
             res.status( status ).json( message );

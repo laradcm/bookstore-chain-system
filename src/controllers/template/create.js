@@ -1,33 +1,14 @@
-
-const isDatatype = require( '../../helpers/isDatatype' );
-
 //agregation of create methods for the controller factory
-const create = ( table, dao, valModel ) =>
+const create = ( table, dao, valModel, validation ) =>
 {
     const controller = {};
 
     controller.create = async ( req, res, next ) =>
     {
         try {
-            let message = '';
-            let status = 200;
-            let error = {};
+            let { status, message, error } = validation.inputVal( req.body, valModel.create );
 
-            if ( isDatatype( req.body, 'Array' ) ) { //handles users single or multiple inserts
-                for ( item of req.body ) {
-
-                    error = valModel.create.validate( item ).error;
-                    if ( error ) { break; }
-                }
-            } else {
-                error = valModel.create.validate( req.body ).error;
-            }
-
-            if ( error ) {
-                message = `Bad input: ${ error.message }`;
-                status = 400;
-
-            } else {
+            if ( !error ) {
                 const result = await dao.create( req.body );
                 message = `${ result.result.length } ${ table } insertions successful!`;
             }

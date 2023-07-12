@@ -1,4 +1,4 @@
-//book object structure
+//book factory for testing and seeds templates
 const createBook = ( title, author, desc ) =>
 {
 

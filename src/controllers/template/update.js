@@ -1,35 +1,32 @@
+const getIdFromBody = require( "../../helpers/getIdFromBody" );
 
 //agregation of update methods for the controller factory
-const update = ( table, dao, valModel ) =>
+const update = ( table, dao, valModel, validation ) =>
 {
     const controller = {};
 
-    controller.updateUnique = async ( req, res, next ) =>
+    controller.update = async ( req, res, next ) =>
     {
         try {
-            let message = '';
-            let status = 200;
+            let id = req.params;
+            let data = req.body;
+            let isMany = false;
 
-            const errorId = valModel.id.validate( req.params ).error;
-            const errorBody = valModel.update.validate( req.body ).error;
+            if ( !Object.keys(id).length) {//if there is no id as a request parameter
+                isMany = true;
+                [ id, data ] = getIdFromBody( req.body, valModel.id );//compare body against schema to retrieve id and body
+            }
 
-            if ( errorId ) {
-                message = `Bad input: ${ errorId.message }`;
-                status = 400;
+            const valResultId = validation.inputVal( id, valModel.id );
+            const valResultBody = validation.inputVal( data, valModel.update );
 
-            } else if ( errorBody ) {
-                message = `Bad input: ${ errorBody.message }`;
-                status = errorBody.message.includes( 'not allowed' ) ? 403 : 400;
+            let { status, message, error } = valResultId.error ? valResultId : valResultBody;
 
-            } else {
-                const result = await dao.updateUnique( req.params, req.body );
-                if ( result === 0 ) {
-                    message = `${ table } not found, no updates occured`;
-                    status = 404;
+            if ( !error ) {
+                const result = !isMany ? await dao.updateUnique( id, data )
+                    : await dao.updateMany( id, data );
 
-                } else {
-                    message = `${ result } ${ table } updates successful!`;
-                }
+                [ status, message ] = validation.resultCheck( table, result, 'updates' );
             }
 
             res.status( status ).json( message );

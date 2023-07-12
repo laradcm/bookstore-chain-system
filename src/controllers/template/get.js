@@ -1,5 +1,5 @@
 //agregation of get methods for the controller factory
-const get = ( table, dao, valModel ) =>
+const get = ( table, dao, valModel, validation ) =>
 {
     const controller = {};
 
@@ -17,25 +17,11 @@ const get = ( table, dao, valModel ) =>
     controller.getUnique = async ( req, res, next ) =>
     {
         try {
-            let message = '';
-            let status = 200;
+            let { status, message, error } = validation.inputVal(  req.params, valModel.id  );
 
-            const { error } = valModel.id.validate( req.params );
-
-            if ( error ) {
-                message = `Bad input: ${ error.message }`;
-                status = 400;
-
-            } else {
+            if ( !error ) {
                 const result = await dao.getUnique( req.params );
-                if ( result.length < 1 ) {
-                    message = `${ table } not found`;
-                    status = 404;
-
-                } else {
-                    message = result;
-                }
-
+                [ status, message ] = validation.resultCheck( table, result );
             }
 
             res.status( status ).json( message );
