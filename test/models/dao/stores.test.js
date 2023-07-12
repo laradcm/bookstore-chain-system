@@ -46,7 +46,7 @@ describe( 'stores DAO', () =>
 
         const books = await booksDao.getAll();
         const result = await dao.create( entry );
-        
+
         expect( result.effects.length ).toBeGreaterThan( 0 );
         expect( result.effects.length ).toBe( books.length );
 
@@ -73,6 +73,16 @@ describe( 'stores DAO', () =>
         const result = await dao.getUnique( id );
         expect( resultDeletion ).toBe( 1 );
         expect( result ).toEqual( [] );
+
+    } );
+
+
+    it( 'should delete many', async () =>
+    {
+        const ids = [ { id: 2 }, { id: 3 }, { id: 4 } ];
+
+        const resultDeletion = await dao.deleteMany( ids );
+        expect( resultDeletion ).toBe( 3 );
 
     } );
 

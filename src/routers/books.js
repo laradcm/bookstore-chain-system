@@ -3,7 +3,7 @@ const {
     getUnique,
     create,
     update,
-    deleteUnique,
+    del,
 
 } = require( "../controllers/books" );
 
@@ -17,11 +17,13 @@ const routes = ( router ) =>
 
     router.post( `/${ handle }`, create );
 
-    router.patch( `/${ handle }`, update );//for batch or body only update
+    router.patch( `/${ handle }`, update );//body only update
 
     router.patch( `/${ handle }/:id`, update );
 
-    router.delete( `/${ handle }/:id`, deleteUnique );
+    router.delete( `/${ handle }`, del );//body only del
+
+    router.delete( `/${ handle }/:id`, del );
 };
 
 module.exports = routes;

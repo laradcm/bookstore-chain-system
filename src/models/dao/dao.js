@@ -30,7 +30,7 @@ const Dao = ( table, db ) =>
         try {
             const finalResult = await db.transaction( async trx =>
             {
-                const result = await trx( table ) 
+                const result = await trx( table )
                     .insert( body );
 
                 if ( trx.isCompleted ) {
@@ -65,7 +65,7 @@ const Dao = ( table, db ) =>
                 const result = [];
 
                 for ( let i = 0; i < id.length; i++ ) {
-                    
+
                     const res = await dao.updateUnique( id[ i ], body[ i ], trx ); //here
                     result.push( res );
                 }
@@ -86,6 +86,12 @@ const Dao = ( table, db ) =>
     dao.deleteUnique = async ( id ) =>
     {
         return await db( table ).where( id ).del();
+    };
+
+    dao.deleteMany = async ( id ) =>
+    {
+        ids = id.map( ( entry ) => entry.id );
+        return await db( table ).whereIn( 'id', ids ).del();
     };
 
     return dao;

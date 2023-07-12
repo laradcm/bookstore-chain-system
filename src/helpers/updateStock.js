@@ -6,8 +6,8 @@ const dao = require( '../models/dao/inventory' );
 const updateStock = async () =>
 {
     try {
-        const result = await dao.updateStock();
-        // console.log(result);
+        await dao.updateStock();
+
     } catch ( error ) {
         console.log( error );
     }

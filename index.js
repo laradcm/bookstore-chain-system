@@ -20,10 +20,10 @@ app.use( cors( corsOptions ) );
 app.use( express.json() );
 app.use( reqTracking );
 
-
 //routing
 app.use( '/', router() );
 
+//error handler
 app.use(errorHandler);
 
 //serve static landing page

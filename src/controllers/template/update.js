@@ -10,10 +10,9 @@ const update = ( table, dao, valModel, validation ) =>
         try {
             let id = req.params;
             let data = req.body;
-            let isMany = false;
+            const IS_PARAM = Object.keys(id).length;
 
-            if ( !Object.keys(id).length) {//if there is no id as a request parameter
-                isMany = true;
+            if ( !IS_PARAM) {//if there is no request parameter
                 [ id, data ] = getIdFromBody( req.body, valModel.id );//compare body against schema to retrieve id and body
             }
 
@@ -23,7 +22,7 @@ const update = ( table, dao, valModel, validation ) =>
             let { status, message, error } = valResultId.error ? valResultId : valResultBody;
 
             if ( !error ) {
-                const result = !isMany ? await dao.updateUnique( id, data )
+                const result = IS_PARAM ? await dao.updateUnique( id, data )
                     : await dao.updateMany( id, data );
 
                 [ status, message ] = validation.resultCheck( table, result, 'updates' );

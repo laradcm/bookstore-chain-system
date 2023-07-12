@@ -23,12 +23,11 @@ const Controller = ( table, dao, valModel ) =>
 
 
     //---------------updates------------------------------------
-    controller.updateUnique = update.updateUnique;
-    controller.updateMany = update.updateMany;
+    controller.update = update.update;
 
 
     //--------------deletes-------------------------------------
-    controller.deleteUnique = deletes.deleteUnique;
+    controller.del = deletes.del;
 
     return controller;
 };

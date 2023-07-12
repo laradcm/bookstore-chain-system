@@ -3,15 +3,19 @@ const deletes = ( table, dao, valModel, validation ) =>
 {
     const controller = {};
 
-    controller.deleteUnique = async ( req, res, next ) =>
+    controller.del = async ( req, res, next ) =>
     {
         try {
-            const input = req.params ? req.params : req.body;
+            const IS_PARAM = Object.keys( req.params ).length;
+            const input = IS_PARAM ? req.params : req.body;
+
             let { status, message, error } = validation.inputVal( input, valModel.id );
 
             if ( !error ) {
-                const result = await dao.deleteUnique( req.params );
-                [ status, message ] = validation.resultCheck( table, result, 'deletions' );
+                const result = IS_PARAM ? await dao.deleteUnique( input ) :
+                    await dao.deleteMany( input );
+
+                [ status, message ] = validation.resultCheck( table, result, 'deletions');
             }
 
             res.status( status ).json( message );
