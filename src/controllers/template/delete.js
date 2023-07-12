@@ -6,14 +6,14 @@ const deletes = ( table, dao, valModel, validation ) =>
     controller.del = async ( req, res, next ) =>
     {
         try {
-            const IS_PARAM = Object.keys( req.params ).length;
-            const input = IS_PARAM ? req.params : req.body;
+            const IS_PARAM = Object.keys( req.params ).length;  //to check if the req comes with url param
+            const input = IS_PARAM ? req.params : req.body;     //if not, then use ids from body
 
             let { status, message, error } = validation.inputVal( input, valModel.id );
 
             if ( !error ) {
-                const result = IS_PARAM ? await dao.deleteUnique( input ) :
-                    await dao.deleteMany( input );
+                const result = IS_PARAM ? await dao.deleteOne( input ) :
+                    await dao.delete( input );
 
                 [ status, message ] = validation.resultCheck( table, result, 'deletions');
             }
@@ -28,4 +28,6 @@ const deletes = ( table, dao, valModel, validation ) =>
 
     return controller;
 };
+
+
 module.exports = deletes;

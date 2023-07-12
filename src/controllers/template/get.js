@@ -14,13 +14,18 @@ const get = ( table, dao, valModel, validation ) =>
         }
     };
 
-    controller.getUnique = async ( req, res, next ) =>
+    controller.get = async ( req, res, next ) =>
     {
         try {
-            let { status, message, error } = validation.inputVal(  req.params, valModel.id  );
+            const IS_PARAM = Object.keys( req.params ).length; //to check if the req comes with url param
+            const input = IS_PARAM ? req.params : req.body;    //if not then grab ids from body
+
+            let { status, message, error } = validation.inputVal( input, valModel.id );
 
             if ( !error ) {
-                const result = await dao.getUnique( req.params );
+                const result = IS_PARAM ? await dao.getOne( input ) :
+                    await dao.get( input );
+
                 [ status, message ] = validation.resultCheck( table, result );
             }
 
@@ -34,5 +39,6 @@ const get = ( table, dao, valModel, validation ) =>
 
     return controller;
 };
+
 
 module.exports = get;

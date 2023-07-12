@@ -17,7 +17,7 @@ const idSchema = Joi.object( {
 
 } );
 
-
+//for the controller template and in case of future changes
 const updateInventorySchema = createInventorySchema;
 
 module.exports = {

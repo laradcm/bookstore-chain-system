@@ -7,7 +7,7 @@ const inventoryDao = Dao( table, db );
 
 //custom dao functions:
 
-inventoryDao.updateUnique = async ( id, body, trx = false ) =>
+inventoryDao.updateOne = async ( id, body, trx = false ) =>
 {
   body.status = body.quantity > 0 ? 'in_stock' : 'out_of_stock';//attaches status to body
 
@@ -23,10 +23,13 @@ inventoryDao.updateUnique = async ( id, body, trx = false ) =>
 
 inventoryDao.updateStock = async () =>//for periodic stock check task
 {
-  return await db( table ).where( {
-    quantity: 0,
-    status: 'in_stock'
-  } ).update( 'status', 'out_of_stock' );
+  return await db( table ).where(
+    {
+      quantity: 0,
+      status: 'in_stock'
+    } )
+    .update( 'status', 'out_of_stock' );
+
 };
 
 
@@ -41,7 +44,9 @@ inventoryDao.create = async ( trx, storesIds, booksIds ) =>//called internally f
 
 
 //cleans up unecessary methods from template:
-delete inventoryDao.deleteUnique;
+delete inventoryDao.deleteOne;
+delete inventoryDao.delete;
+
 
 module.exports = inventoryDao;
 

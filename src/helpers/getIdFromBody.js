@@ -1,5 +1,3 @@
-const Joi = require( 'joi' );
-
 //speparate id objects from the body request
 
 const getIdFromBody = ( body, schemaId ) =>

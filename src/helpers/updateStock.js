@@ -9,7 +9,7 @@ const updateStock = async () =>
         await dao.updateStock();
 
     } catch ( error ) {
-        console.log( error );
+        console.error( error );
     }
 };
 

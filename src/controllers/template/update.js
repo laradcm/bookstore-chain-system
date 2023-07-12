@@ -8,22 +8,23 @@ const update = ( table, dao, valModel, validation ) =>
     controller.update = async ( req, res, next ) =>
     {
         try {
-            let id = req.params;
+            let id = req.params;//init variables in case it is PARAMs
             let data = req.body;
+
             const IS_PARAM = Object.keys(id).length;
 
             if ( !IS_PARAM) {//if there is no request parameter
-                [ id, data ] = getIdFromBody( req.body, valModel.id );//compare body against schema to retrieve id and body
+                [ id, data ] = getIdFromBody( req.body, valModel.id );//compare body against schema to retrieve id and body separately
             }
 
             const valResultId = validation.inputVal( id, valModel.id );
             const valResultBody = validation.inputVal( data, valModel.update );
 
-            let { status, message, error } = valResultId.error ? valResultId : valResultBody;
+            let { status, message, error } = valResultId.error ? valResultId : valResultBody;//if ID didnt fail, load body results
 
             if ( !error ) {
-                const result = IS_PARAM ? await dao.updateUnique( id, data )
-                    : await dao.updateMany( id, data );
+                const result = IS_PARAM ? await dao.updateOne( id, data )
+                    : await dao.update( id, data );
 
                 [ status, message ] = validation.resultCheck( table, result, 'updates' );
             }
@@ -39,5 +40,6 @@ const update = ( table, dao, valModel, validation ) =>
     return controller;
 
 };
+
 
 module.exports = update;

@@ -2,7 +2,7 @@ const { dbInit, dbReset } = require( '../../dbSetup' );
 const storesDao = require( '../../../src/models/dao/stores' );
 const dao = require( '../../../src/models/dao/books' );
 const createEntry = require( '../../../src/models/factory/createBook' );
-
+const table = 'books';
 
 //setup
 beforeAll( async () => //populates test db
@@ -25,9 +25,18 @@ describe( 'books DAO', () =>
 
     it( 'should read correct data', async () =>
     {
-        const result = await dao.getUnique( { id: 1 } );
+        const result = await dao.getOne( { id: 1 } );
 
         expect( result[ 0 ].id ).toBe( 1 );
+
+    } );
+
+    it( 'should read correct batch data', async () =>
+    {
+        const result = await dao.get( [ { id: 1 }, { id: 2 } ] );
+
+        expect( result[ 0 ].id ).toBe( 1 );
+        expect( result[ 1 ].id ).toBe( 2 );
 
     } );
 
@@ -58,11 +67,36 @@ describe( 'books DAO', () =>
         const entry = createEntry( 'Title 2' );
         const key = Object.keys( entry )[ 0 ];
 
-        await dao.updateUnique( id, entry );
-        const result = await dao.getUnique( id );
+        await dao.updateOne( id, entry );
+        const result = await dao.getOne( id );
+
         expect( result[ 0 ].id ).toBe( 1 );
         expect( result[ 0 ][ key ] ).toBe( entry[ key ] );
 
+    } );
+
+    it( 'should update many correctly', async () =>
+    {
+        //prep data
+        const ids = [ { id: 1 }, { id: 2 }, { id: 3 } ];
+
+        const entry = ids.map( ( id ) => createEntry( `Title Many ${ id.id }` ) );
+        const key = Object.keys( entry[ 0 ] )[ 0 ];
+
+        //update and check
+        const result = await dao.update( ids, entry );
+        expect( result ).toBe( ids.length );
+
+        //get data
+        const resultData = await dao.get( ids );
+
+        //compare
+        let i = 0;
+        resultData.forEach( ( data ) =>
+        {
+            expect( data[ key ] ).toBe( entry[ i ][ key ] );
+            i++;
+        } );
 
     } );
 
@@ -70,8 +104,9 @@ describe( 'books DAO', () =>
     {
         const id = { id: 1 };
 
-        const resultDeletion = await dao.deleteUnique( id );
-        const result = await dao.getUnique( id );
+        const resultDeletion = await dao.deleteOne( id );
+        const result = await dao.getOne( id );
+
         expect( resultDeletion ).toBe( 1 );
         expect( result ).toEqual( [] );
 
@@ -81,8 +116,8 @@ describe( 'books DAO', () =>
     {
         const ids = [ { id: 2 }, { id: 3 }, { id: 4 } ];
 
-        const resultDeletion = await dao.deleteMany( ids );
-        expect( resultDeletion ).toBe( 3 );
+        const resultDeletion = await dao.delete( ids );
+        expect( resultDeletion ).toBe( ids.length );
 
     } );
 

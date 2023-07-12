@@ -1,7 +1,6 @@
 const isDatatype = require( '../../helpers/isDatatype' );
 
-//validation tasks for the controllers requests
-
+//validation tasks for the controllers requests:
 
 //checks before operation
 const inputVal = ( input, schema ) =>
@@ -50,7 +49,6 @@ const resultCheck = ( table, result, operation = false ) =>
 
     return [ status, message ];
 };
-
 
 
 module.exports = {

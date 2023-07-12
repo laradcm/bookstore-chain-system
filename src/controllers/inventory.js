@@ -9,8 +9,8 @@ const inventoryController = Controller( 'inventory', dao, valModel.inventorySche
 //ex inventoryController.myCustomGet =  async (req, res, next) => {...}
 
 //Inventory is a child from stores and books and will be automatically created/deleted when its parents are modified
-delete inventoryController.create;      
-delete inventoryController.deleteUnique;//cleans up unecessary methods from template
+delete inventoryController.create   
+delete inventoryController.del;//cleans up unecessary methods from template
 
 
 module.exports = inventoryController;

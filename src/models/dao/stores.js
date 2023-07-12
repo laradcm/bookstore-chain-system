@@ -34,5 +34,6 @@ storesDao.create = async ( body ) =>
     }
 };
 
+
 module.exports = storesDao;
 

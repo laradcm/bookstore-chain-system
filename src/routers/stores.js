@@ -1,6 +1,6 @@
 const {
     getAll,
-    getUnique,
+    get,
     create,
     update,
     del,
@@ -13,15 +13,17 @@ const routes = ( router ) =>
 {
     router.get( `/${ handle }`, getAll );
 
-    router.get( `/${ handle }/:id`, getUnique );
+    router.get( `/${ handle }/select`, get );
+
+    router.get( `/${ handle }/:id`, get );
 
     router.post( `/${ handle }`, create );
 
-    router.patch( `/${ handle }`, update );//body only update
+    router.patch( `/${ handle }`, update );
 
     router.patch( `/${ handle }/:id`, update );
 
-    router.delete( `/${ handle }`, del );//body only del
+    router.delete( `/${ handle }`, del );
 
     router.delete( `/${ handle }/:id`, del );
 };

@@ -15,7 +15,7 @@ const Controller = ( table, dao, valModel ) =>
 
     //------------gets------------------------------------------
     controller.getAll = get.getAll;
-    controller.getUnique = get.getUnique;
+    controller.get = get.get;
 
 
     //---------------creates------------------------------------

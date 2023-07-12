@@ -1,9 +1,4 @@
 
-const { Knex } = require( 'knex' );//attempt to bring types in, I miss TypeScript
-const knex = require( 'knex' );
-const knexFile = require( '../../db/knexfile' );
-const db = knex( knexFile.test );
-
 //factory function to build CRUD of Data Access Operations
 
 const Dao = ( table, db ) =>
@@ -18,11 +13,23 @@ const Dao = ( table, db ) =>
     };
 
 
-    dao.getUnique = async ( id ) =>
+    dao.getOne = async ( id ) =>
     {
         return await db( table ).where( id );
     };
 
+                             
+    dao.get = async ( id ) =>// input is [ {id1:1, id2:2}, {id1:3, id2:2}...]
+    {   
+        keys = Object.keys( id[ 0 ] );
+
+        ids = id.map( ( entry ) => 
+            keys.map( ( key ) => entry[ key ] )
+        );
+
+        //result whereIn( [ id1, id2 ] , [ [1,2], [3,2], [2,3]...] )
+        return await db( table ).whereIn( keys, ids );
+    };
 
     //---------------creates------------------------------------
     dao.create = async ( body ) =>
@@ -47,7 +54,7 @@ const Dao = ( table, db ) =>
     };
 
     //---------------updates------------------------------------
-    dao.updateUnique = async ( id, body, trx = false ) =>
+    dao.updateOne = async ( id, body, trx = false ) =>
     {
         dbSelect = trx ? trx : db;
         const result = await dbSelect( table )
@@ -57,7 +64,7 @@ const Dao = ( table, db ) =>
         return result;
     };
 
-    dao.updateMany = async ( id, body ) => //depends on updateUnique
+    dao.update = async ( id, body ) => //depends on updateOne
     {
         try {
             const finalResult = await db.transaction( async trx =>
@@ -66,7 +73,7 @@ const Dao = ( table, db ) =>
 
                 for ( let i = 0; i < id.length; i++ ) {
 
-                    const res = await dao.updateUnique( id[ i ], body[ i ], trx ); //here
+                    const res = await dao.updateOne( id[ i ], body[ i ], trx ); //here
                     result.push( res );
                 }
 
@@ -83,14 +90,14 @@ const Dao = ( table, db ) =>
     };
 
     //--------------deletes-------------------------------------
-    dao.deleteUnique = async ( id ) =>
+    dao.deleteOne = async ( id ) =>
     {
         return await db( table ).where( id ).del();
     };
 
-    dao.deleteMany = async ( id ) =>
+    dao.delete = async ( id ) =>// input is [ {id:1}, {id:3} ...]
     {
-        ids = id.map( ( entry ) => entry.id );
+        ids = id.map( ( entry ) => entry.id );//[ 1, 3, ...]
         return await db( table ).whereIn( 'id', ids ).del();
     };
 

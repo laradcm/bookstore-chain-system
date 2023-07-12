@@ -44,7 +44,6 @@ describe( 'database', () =>
 
     it( 'should read data', async () =>
     {
-
         const query = `select * from ${ table }`;
         const result = await db.raw( query );
 
@@ -54,11 +53,9 @@ describe( 'database', () =>
 
     it( 'should read correct data', async () =>
     {
+        const result = await db( table ).whereIn( 'id', [ 1, 2, 3 ] );
 
-        const query = `select id from ${ table } where id=1`;
-        const result = await db.raw( query );
-
-        expect( result.rows[ 0 ].id ).toBe( 1 );
+        expect( result[ 1 ].id ).toBe( 2 );
 
     } );
 
@@ -77,7 +74,6 @@ describe( 'database', () =>
         const key = Object.keys( entry )[ 0 ];
 
         await db( table ).insert( entry );
-
         const result = await db( table ).where( key, entry[ key ] );
 
         expect( result[ 0 ][ key ] ).toBe( entry[ key ] );

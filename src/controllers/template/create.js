@@ -21,9 +21,8 @@ const create = ( table, dao, valModel, validation ) =>
         }
     };
 
-
     return controller;
-
 };
+
 
 module.exports = create;
