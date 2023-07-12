@@ -1,4 +1,5 @@
 const { dbInit, dbReset } = require( '../../dbSetup' );
+const booksDao = require( '../../../src/models/dao/books' );
 const dao = require( '../../../src/models/dao/stores' );
 const createEntry = require( '../../../src/models/factory/createStore' );
 
@@ -35,14 +36,26 @@ describe( 'stores DAO', () =>
         const entry = createEntry( 'Name 1', 'Location 1' );
 
         const result = await dao.create( entry );
-        expect( result ).toBeGreaterThan( 0 );
+        expect( result.result.length ).toBeGreaterThan( 0 );
+
+    } );
+
+    it( 'should create inventory instance for every book', async () =>
+    {
+        const entry = createEntry( 'Name 2', 'Location 2' );
+
+        const books = await booksDao.getAll();
+        const result = await dao.create( entry );
+        
+        expect( result.effects.length ).toBeGreaterThan( 0 );
+        expect( result.effects.length ).toBe( books.length );
 
     } );
 
     it( 'should update correct data', async () =>
     {
         const id = { id: 1 };
-        const entry = createEntry( 'Name 2' );
+        const entry = createEntry( 'Name Unique' );
         const key = Object.keys( entry )[ 0 ];
 
         await dao.updateUnique( id, entry );

@@ -1,4 +1,5 @@
 const { dbInit, dbReset } = require( '../../dbSetup' );
+const storesDao = require( '../../../src/models/dao/stores' );
 const dao = require( '../../../src/models/dao/books' );
 const createEntry = require( '../../../src/models/factory/createBook' );
 
@@ -35,7 +36,19 @@ describe( 'books DAO', () =>
         const entry = createEntry( 'Title 1', 'Auhtor 1', 'Desc 1' );
 
         const result = await dao.create( entry );
-        expect( result ).toBeGreaterThan( 0 );
+        expect( result.result.length ).toBeGreaterThan( 0 );
+
+    } );
+
+    it( 'should create inventory instance in every store', async () =>
+    {
+        const entry = createEntry( 'Title 1', 'Auhtor 1', 'Desc 1' );
+
+        const stores = await storesDao.getAll();
+        const result = await dao.create( entry );
+        
+        expect( result.effects.length ).toBeGreaterThan( 0 );
+        expect( result.effects.length ).toBe( stores.length );
 
     } );
 

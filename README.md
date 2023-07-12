@@ -12,7 +12,7 @@ Inventory system for multiple bookstores containing the same copies of the same 
 --------------------------------------------------------------------------------------
 ### Technologies Used:
 
-- Node.js
+- Express.js
 - knex.js
 - postgreSQL
 

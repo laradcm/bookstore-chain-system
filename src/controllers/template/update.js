@@ -1,4 +1,4 @@
-const inventoryStatusCheck = require( '../../helpers/inventoryStatusCheck' );
+
 //agregation of update methods for the controller factory
 const update = ( table, dao, valModel ) =>
 {
@@ -22,7 +22,6 @@ const update = ( table, dao, valModel ) =>
                 status = errorBody.message.includes( 'not allowed' ) ? 403 : 400;
 
             } else {
-                req.body = inventoryStatusCheck( table, req.body );
                 const result = await dao.updateUnique( req.params, req.body );
                 if ( result === 0 ) {
                     message = `${ table } not found, no updates occured`;

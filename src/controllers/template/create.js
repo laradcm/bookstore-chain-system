@@ -29,7 +29,7 @@ const create = ( table, dao, valModel ) =>
 
             } else {
                 const result = await dao.create( req.body );
-                message = `${ result } ${ table } insertions successful!`;
+                message = `${ result.result.length } ${ table } insertions successful!`;
             }
 
             res.status( status ).json( message );
