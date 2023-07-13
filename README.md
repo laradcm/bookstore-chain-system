@@ -29,8 +29,8 @@ Inventory system for multiple bookstores containing the same copies of the same 
 
 
 <p align="center">
- <img src="public/img/ER_Diagram.PNG" 
-alt="Relational database diagram"/>
+ <img src="public/img/ER_Diagram.jpg" 
+alt="Relational database diagram" height="310"/>
 </p>
 
 <p> That way, it is possible to treat the stores and books tables individually without worring about them affecting each other.</p>
