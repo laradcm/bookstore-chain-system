@@ -75,7 +75,7 @@ alt="Relational database diagram"/>
 1. Clone this repository and install packages 
 ```cmd
 git clone https://github.com/laradcm/bookstore-chain-system
-
+cd .\bookstore-chain-system\
 npm i
 ``` 
 
