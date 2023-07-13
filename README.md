@@ -123,7 +123,7 @@ DEL   /books                                          /stores        //deletes v
 
 DEL   /books/:id                                      /stores/:id    //deletes a single value according to id
 ```
-9. when a request is sent the server will post in on the console:
+9. when a request is sent the server will post it on the console:
 ```clg
 GET request received for /books from 127.0.0.1
 ``` 
